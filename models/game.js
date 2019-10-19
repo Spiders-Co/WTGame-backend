@@ -31,6 +31,8 @@ const gameSchema = mongoose.Schema({
   pegi_rating: { type: Number, required: true }
 });
 
+const gameModel = mongoose.model("Game", gameSchema);
+
 const validate = game => {
   const sysReqSchema = Joi.object().keys({
     os: Joi.string().required(),
@@ -70,5 +72,6 @@ const validate = game => {
 
 module.exports = {
   validate,
-  gameSchema
+  gameSchema,
+  gameModel
 };
