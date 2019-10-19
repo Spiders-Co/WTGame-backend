@@ -4,6 +4,7 @@ const devDebug = require('debug')('app:dev');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
