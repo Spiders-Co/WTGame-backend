@@ -19,11 +19,15 @@
   },
   "homepage": "https://github.com/Spiders-Co/WTGame-backend#readme",
   "dependencies": {
+    "config": "^3.2.3",
     "debug": "^4.1.1",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "g": "^2.0.1",
+    "helmet": "^3.21.1",
     "joi": "^14.3.1",
     "mongoose": "^5.7.5",
-    "nodemon": "^1.19.3"
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.4"
   }
 }
