@@ -35,37 +35,31 @@ const gameModel = mongoose.model("Game", gameSchema);
 
 const validate = game => {
   const sysReqSchema = Joi.object().keys({
-    os: Joi.string().required(),
-    processor: Joi.string().required(),
-    memory: Joi.string().required(),
-    graphics: Joi.string().required(),
-    network: Joi.string().required(),
-    storage: Joi.string().required()
+    os: Joi.string(),
+    processor: Joi.string(),
+    memory: Joi.string(),
+    graphics: Joi.string(),
+    network: Joi.string(),
+    storage: Joi.string()
   });
 
   const schema = Joi.object().keys({
-    title: Joi.string().required(),
-    description: Joi.string().required(),
+    title: Joi.string(),
+    description: Joi.string(),
     system_requirements: Joi.object().keys({
       minimum: sysReqSchema,
       recommended: sysReqSchema
     }),
-    dev: Joi.array()
-      .items(Joi.string())
-      .required(),
-    publisher: Joi.string().required(),
-    hours_of_play: Joi.number().required(),
-    release_date: Joi.date().required(),
-    steam_rate: Joi.string().required(),
-    wt_rate: Joi.string().required(),
-    genre: Joi.array()
-      .items(Joi.string())
-      .required(),
-    platforms: Joi.array()
-      .items(Joi.string())
-      .required(),
-    engine: Joi.string().required(),
-    pegi_rating: Joi.number().required()
+    dev: Joi.array().items(Joi.string()),
+    publisher: Joi.string(),
+    hours_of_play: Joi.number(),
+    release_date: Joi.date(),
+    steam_rate: Joi.string(),
+    wt_rate: Joi.string(),
+    genre: Joi.array().items(Joi.string()),
+    platforms: Joi.array().items(Joi.string()),
+    engine: Joi.string(),
+    pegi_rating: Joi.number()
   });
   return Joi.validate(game, schema);
 };
