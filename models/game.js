@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const sysReqSchema = mongoose.Schema({
-  os: { type: String, required: true },
-  processor: { type: String, required: true },
-  memory: { type: String, required: true },
-  graphics: { type: String, required: true },
-  network: { type: String, required: true },
-  storage: { type: String, required: true }
+  os: String,
+  processor: String,
+  memory: String,
+  graphics: String,
+  network: String,
+  storage: String
 });
 
 const systemRequirementSchema = mongoose.Schema({
@@ -16,19 +16,19 @@ const systemRequirementSchema = mongoose.Schema({
 });
 
 const gameSchema = mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  system_requirements: { type: systemRequirementSchema, required: true },
-  dev: [{ type: String, required: true }],
-  publisher: { type: String, required: true },
-  hours_of_play: { type: Number, required: true },
-  release_date: { type: Date, required: true },
-  steam_rate: { type: String, required: true },
-  wt_rate: { type: String, required: true },
-  genre: [{ type: String, required: true }],
-  platforms: [{ type: String, required: true }],
-  engine: { type: String, required: true },
-  pegi_rating: { type: Number, required: true }
+  title: { type: String, required: true, unique: true },
+  description: String,
+  system_requirements: { type: systemRequirementSchema },
+  dev: [{ type: String }],
+  publisher: String,
+  hours_of_play: Number,
+  release_date: Date,
+  steam_rate: Number,
+  wt_rate: Number,
+  genre: [{ type: String }],
+  platforms: [{ type: String }],
+  engine: String,
+  pegi_rating: Number
 });
 
 const gameModel = mongoose.model("Game", gameSchema);
@@ -54,8 +54,8 @@ const validate = game => {
     publisher: Joi.string(),
     hours_of_play: Joi.number(),
     release_date: Joi.date(),
-    steam_rate: Joi.string(),
-    wt_rate: Joi.string(),
+    steam_rate: Joi.number(),
+    wt_rate: Joi.number(),
     genre: Joi.array().items(Joi.string()),
     platforms: Joi.array().items(Joi.string()),
     engine: Joi.string(),
