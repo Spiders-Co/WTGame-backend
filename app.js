@@ -33,6 +33,7 @@ mongoose
 // routes
 const home = require("./routes/home");
 const games = require("./routes/game");
+const users = require("./routes/users")
 
 // middlewares
 app.use(express.json());
@@ -42,5 +43,6 @@ app.use(helmet());
 // api endpoints
 app.use("/", home);
 app.use("/api/games", games);
+app.use("/api/users",users)
 
 app.listen(PORT, StartDebug(`App is running on port ${PORT}`));

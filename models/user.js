@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Joi = require("@hapi/joi");
 
 const userGamesSchema = new mongoose.Schema({
   gameId: ObjectID,
@@ -7,6 +8,7 @@ const userGamesSchema = new mongoose.Schema({
   playHours: Number,
   status: String // maybe ObjectID
 });
+
 const userSchema = new mongoose.Schema({
   firstName: String,
   lastname: String,
@@ -17,4 +19,37 @@ const userSchema = new mongoose.Schema({
   avatar: String
 });
 
-export const Cource = mongoose.model('User', userSchema);
+const validate = user => {
+  const gameSchema = {
+    gameId: Joi.ObjectID(),
+    rate: Joi.number(),
+    review: Joi.string(),
+    playHours: Joi.number(),
+    status: Joi.string() // maybe ObjectID
+  };
+  const schema = {
+    firstName: Joi.string()
+      .alphanum()
+      .min(3)
+      .max(30),
+    lastName: Joi.string()
+      .alphanum()
+      .min(3)
+      .max(30),
+    email: Joi.string()
+      .email()
+      .required(),
+    password: Joi.string().required(),
+    role: Joi.string(),
+    games: Joi.array().items(gameSchema),
+    avatar: Joi.string()
+  };
+  return Joi.validate(user, schema);
+};
+
+const Cource = mongoose.model("User", userSchema);
+
+module.exports = {
+  validate,
+  userModel
+};
