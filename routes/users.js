@@ -1,6 +1,7 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const router = express.Router();
-const { validate } = require("../models/user");
+const { userModel, validate } = require("../models/user");
 
 router.get("/", (req, res) => {
   const users = null;
@@ -15,19 +16,21 @@ router.get("/:id", (req, res) => {
   res.send(user);
 });
 
-router.post("/", (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-  const user = {
-    firstName,
-    lastName,
-    email,
-    password
-  };
-  const valid = true;
-  //validate the data
-  if (!valid) res.status(400).send("Data is not valid");
-  // add user to the database11
-  res.send(user);
+router.post("/", async (req, res) => {
+  // validate the data
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  let user = await userModel.findOne({ email: req.body.email });
+  if (user) return res.status(400).send("User Already Exists .. ");
+
+  // add user to the database
+  user = new userModel(req.body);
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  await user.save();
+
+  res.header("x-auth-token", user.genAuthToken()).send(user);
 });
 
 router.put("/:id", (req, res) => {

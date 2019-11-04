@@ -5,6 +5,8 @@ const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const Joi = require("@hapi/joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const app = express();
 const PORT = process.env.PORT || 5001;
 
@@ -33,7 +35,8 @@ mongoose
 // routes
 const home = require("./routes/home");
 const games = require("./routes/game");
-const users = require("./routes/users")
+const users = require("./routes/users");
+const auth = require("./routes/auth");
 
 // middlewares
 app.use(express.json());
@@ -43,6 +46,7 @@ app.use(helmet());
 // api endpoints
 app.use("/", home);
 app.use("/api/games", games);
-app.use("/api/users",users)
+app.use("/api/users", users);
+app.use("/api/sign-in", auth);
 
 app.listen(PORT, StartDebug(`App is running on port ${PORT}`));
