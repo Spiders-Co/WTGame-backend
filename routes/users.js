@@ -39,4 +39,17 @@ router.put("/:id", (req, res) => {
   // uodate and return
 });
 
+router.delete("/:id", async (req, res) => {
+  let user = await userModel.findById(req.params.id);
+  if (!user) res.status(404).send("User was not found!");
+
+  try {
+    user = await userModel.findByIdAndDelete(req.params.id);
+    // console.log(`user : ${user}`);
+    res.send(user);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
 module.exports = router;
