@@ -3,17 +3,20 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const { userModel, validate } = require("../models/user");
 
-router.get("/", (req, res) => {
-  const users = null;
+router.get("/", async (req, res) => {
   //get all the users from the database
-  res.send("users Route");
+  res.send(await userModel.find());
 });
 
-router.get("/:id", (req, res) => {
-  //search for user in the database
-  const user = null;
-  if (!user) res.status(404).send("User was not found!");
-  res.send(user);
+router.get("/:id", async (req, res) => {
+  try {
+    // search for user in the database
+    const user = await userModel.findById(req.params.id);
+    if (!user) res.status(404).send("User was not found!");
+    res.send(user);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 router.post("/", async (req, res) => {
