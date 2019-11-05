@@ -2,8 +2,13 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const { userModel, validate } = require("../models/user");
+const auth = require("../middlewares/auth");
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
+  // Check authorization
+  const user = await userModel.findById(req.user._id);
+  if (user.role != "admin") return res.status(401).send("Access Denied .. ");
+
   //get all the users from the database
   res.send(await userModel.find());
 });
@@ -36,7 +41,7 @@ router.post("/", async (req, res) => {
   res.header("x-auth-token", user.genAuthToken()).send(user);
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   //Search for the course
   // validate
   // uodate and return
